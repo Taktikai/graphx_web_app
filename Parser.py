@@ -116,30 +116,16 @@ def reverse_search(item, filename, root_group, id = None):
 
 #STRUKTÚRA KIALAKÍTÁS################################################################################################################
 ######################################################################################################################################
-def comms(edge, keys):
-    if edge.find(".//y:GenericEdge", namespaces={"y": "http://www.yworks.com/xml/graphml"}) is not None:
-                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed":
-                                return "wifi" 
-                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed_dotted":
-                                return "gsm"
-                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "line":
-                                return "ethernet"
-    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed":
-        return "rádiós soros port" 
-    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed_dotted":
-        return "rádiós impulzus"
-    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dotted":
-        return "LoRa"
-    if get_specific_data(edge, "Kommunikáció Módja", get_edge_keys(keys)) is not None:
-        return get_specific_data(edge, "Kommunikáció Módja", get_edge_keys(keys))        
-
-
 def get_all_devices(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
     keys = root.findall(".//{http://graphml.graphdrawing.org/xmlns}key")
     root_group = Group('root', 'root', filename[:-8])
     groups = {'root': root_group}
+    """default = None
+    for key in keys:
+        if key.get("attr.name") == "Saját Cím":
+            default = key.find(".//{http://graphml.graphdrawing.org/xmlns}default").text"""
     for node in root.iter('{http://graphml.graphdrawing.org/xmlns}node'):
         if 'yfiles.foldertype' in node.attrib and (node.attrib['yfiles.foldertype'] == 'group' or node.attrib['yfiles.foldertype'] == 'folder'):
             group = Group(id=node.get("id"),
@@ -167,6 +153,8 @@ def get_all_devices(filename):
                             kommunikáció=None,
                             fogadó_interface=None,
                             hálózatazonosító_frekvencia=None,)
+            if device.típus and ignorator_comparator(device.típus, "rsmx") and device.saját_cím is None:
+                device.saját_cím = "xxx.xxx.xxx.xxx/xxx.xxx.xxx.xxx"
             if len(node.get('id')) > 2:
                 parent_id = node.get('id').rsplit('::', 1)[0]
                 if parent_id in groups:
@@ -236,3 +224,21 @@ def count_devices_by_type(group, filename):
                     counts[item.típus] = 0
                 counts[item.típus] += 1
     return counts
+
+
+def comms(edge, keys):
+    if edge.find(".//y:GenericEdge", namespaces={"y": "http://www.yworks.com/xml/graphml"}) is not None:
+                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed":
+                                return "wifi" 
+                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed_dotted":
+                                return "gsm"
+                    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "line":
+                                return "ethernet"
+    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed":
+        return "rádiós soros port" 
+    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dashed_dotted":
+        return "rádiós impulzus"
+    if edge.find(".//y:LineStyle", namespaces={"y": "http://www.yworks.com/xml/graphml"}).get("type") == "dotted":
+        return "LoRa"
+    if get_specific_data(edge, "Kommunikáció Módja", get_edge_keys(keys)) is not None:
+        return get_specific_data(edge, "Kommunikáció Módja", get_edge_keys(keys))  

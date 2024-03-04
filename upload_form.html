@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+</head>
+
+
+<body>
+    <h1>Upload your GraphML file</h1>
+    <form method="POST" action="http://localhost:8000/uploadfile/" enctype="multipart/form-data">
+        <input type="file" name="file_upload" accept=".graphml">
+        <button type="submit">Submit</button>
+    </form> 
+</body>
+
+</html>

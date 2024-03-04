@@ -34,7 +34,7 @@ def create_xls(filename):
             worksheet1.merge_range(row, 0, row, 10 - min(level, 3), group_info, group_format)
             row += 1
             if any(isinstance(item, Device) for item in group.content.values()):
-                headers = ['Típus', 'Elnevezés', 'SN', 'Saját Cím', 'Fogadó Eszköz', 'Kommunikáció', 'Fogadó Interface', 'Hálózatazonosító Frekvencia']
+                headers = ['Típus', 'Elnevezés', 'SN', 'Saját Cím/(GSM CÍm)', 'Fogadó Eszköz', 'Kommunikáció', 'Fogadó Interface', 'Hálózatazonosító Frekvencia']
                 worksheet1.write_row(row, 0, headers, attr_name_format)
                 row += 1
         for item in group.content.values():
