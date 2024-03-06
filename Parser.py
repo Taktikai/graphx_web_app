@@ -122,10 +122,6 @@ def get_all_devices(filename):
     keys = root.findall(".//{http://graphml.graphdrawing.org/xmlns}key")
     root_group = Group('root', 'root', filename[:-8])
     groups = {'root': root_group}
-    """default = None
-    for key in keys:
-        if key.get("attr.name") == "Saját Cím":
-            default = key.find(".//{http://graphml.graphdrawing.org/xmlns}default").text"""
     for node in root.iter('{http://graphml.graphdrawing.org/xmlns}node'):
         if 'yfiles.foldertype' in node.attrib and (node.attrib['yfiles.foldertype'] == 'group' or node.attrib['yfiles.foldertype'] == 'folder'):
             group = Group(id=node.get("id"),
