@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <title>Upload and Process File</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     <script
-    src="https://code.jquery.com/jquery-3.1.1.min.js"
-    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-    crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
 </head>
 <body>
-    <h1>Upload your file</h1>
     <div class="ui container">
-        <form id="upload-form" method="POST" enctype="multipart/form-data">
+        <h1>Upload your file</h1>
+        <form class="ui form" id="upload-form" method="POST" enctype="multipart/form-data">
             <input type="file" id="file-upload" name="file_upload" accept=".graphml">
-            <button class="ui button">Process and Download</button>
+            <button class="ui button" style="margin-top: 20px;">Process and Download</button>
         </form> 
-
         <script>
             const form = document.getElementById('upload-form');
 
@@ -32,15 +32,12 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    window.location.href = 'http://localhost:8000/downloadfile/?filename=' + data.filename;
+                    window.href = 'http://localhost:8000/downloadfile/?filename=' + data.filename;
                 })
                 .catch(error => console.error('Error:', error));
             });
         </script>
 
-        {% block content %}
-
-        {% endblock %}
     </div>
 </body>
 </html>
